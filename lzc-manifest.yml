@@ -7,7 +7,8 @@ application:
 services:
   siyuan:
     # Published baseline. lazycat-action replaces this image before building an update.
-    image: registry.lazycat.cloud/medium/b3log/siyuan:a5d2297fc2af1858
+    # upstream: docker.io/b3log/siyuan:v3.8.10@sha256:4b0d0db854ee9fb7fb4107bf6119c1a5ff63dd61aebeb33f818a2d86f6c43041
+    image: registry.lazycat.cloud/peter/b3log/siyuan:583d28e40063ed9e
     command: serve --workspace=/siyuan/workspace/ --port=6806
     binds:
       - /lzcapp/var/:/siyuan/workspace
