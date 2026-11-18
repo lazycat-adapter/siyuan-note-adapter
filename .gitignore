@@ -1,0 +1,4 @@
+/dist/
+/.lazycat-action/
+/.lazycat-action.lock.yml.tmp
+__pycache__/

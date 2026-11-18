@@ -1,0 +1,11 @@
+params:
+  - id: authcode
+    type: string
+    name: "authcode"
+    description: "workspace password"
+
+locales:
+  zh:
+    authcode:
+      name: "workspace 密码"
+      description: "配置 workspace 密码"

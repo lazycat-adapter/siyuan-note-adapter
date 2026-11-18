@@ -1,0 +1,21 @@
+application:
+  subdomain: siyuan
+  multi_instance: true
+  upstreams:
+    - location: /
+      backend: http://siyuan:6806
+services:
+  siyuan:
+    # Published baseline. lazycat-action replaces this image before building an update.
+    image: registry.lazycat.cloud/medium/b3log/siyuan:a5d2297fc2af1858
+    command: serve --workspace=/siyuan/workspace/ --port=6806
+    binds:
+      - /lzcapp/var/:/siyuan/workspace
+    environment:
+      TZ: Asia/Shanghai
+      PUID: "1001"
+      PGID: "1002"
+      # Read the previous installation parameter through SiYuan's native env var.
+      # This keeps whitespace out of the entrypoint's command-line splitting.
+      SIYUAN_ACCESS_AUTH_CODE: |-
+        {{ .U.authcode }}

@@ -1,0 +1,42 @@
+version: 2
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/cloud.lazycat.app.siyuan.lpk
+  target_arch: amd64
+source:
+  kind: git
+  url: https://github.com/siyuan-note/siyuan.git
+  select:
+    strategy: semver-tag
+    # SiYuan publishes matching v-prefixed Git and Docker tags.
+    # RC/beta tags and mutable Docker aliases are excluded.
+    tag_regex: '^v[0-9]+\.[0-9]+\.[0-9]+$'
+changelog:
+  mode: github-release
+  git_url: https://github.com/siyuan-note/siyuan.git
+state:
+  file: .lazycat-action.lock.yml
+update:
+  strategy: publish
+  allow_downgrade: false
+build:
+  run_buildscript: true
+  prepare:
+    mode: images
+images:
+  - id: siyuan
+    target: service
+    service: siyuan
+    source: docker.io/b3log/siyuan:{tag}
+    delivery:
+      mode: lazycat
+      copy_timeout: 30m
+      copy_idle_timeout: 10m
+stores:
+  official:
+    enabled: true
+    create_if_missing: false
+    skip_if_version_exists: true
+    continue_if_newer_version: true

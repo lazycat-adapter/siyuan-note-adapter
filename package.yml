@@ -1,0 +1,15 @@
+package: cloud.lazycat.app.siyuan
+name: 思源笔记
+version: 3.8.1
+description: 思源笔记是一款隐私优先的个人知识管理系统，支持细粒度块级引用和 Markdown 所见即所得。
+author: siyuan-note
+license: AGPL-3.0-or-later
+homepage: https://github.com/siyuan-note/siyuan
+min_os_version: 1.5.0
+locales:
+  zh:
+    name: 思源笔记
+    description: 思源笔记是一款隐私优先的个人知识管理系统，支持细粒度块级引用和 Markdown 所见即所得。
+  en:
+    name: SiYuan
+    description: A privacy-first personal knowledge management system with block references and a WYSIWYG Markdown editor.

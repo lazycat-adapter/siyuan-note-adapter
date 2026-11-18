@@ -1,0 +1,73 @@
+name: Update SiYuan for LazyCat
+run-name: ${{ (github.event_name == 'push' || inputs.dry-run) && 'SiYuan → LazyCat [仅检查]' || 'SiYuan → LazyCat [验证、打包并送审]' }}
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/update.yml
+      - scripts/**
+      - tests/**
+      - requirements-test.txt
+      - lazycat-action.yml
+      - lzc-build.yml
+      - lzc-manifest.yml
+      - lzc-deploy-params.yml
+      - package.yml
+      - icon.png
+  schedule:
+    # UTC. Beijing 03:37 / 09:37 / 15:37 / 21:37.
+    - cron: '37 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 勾选仅检查，取消勾选则转存、验证、打包并送审。
+        type: boolean
+        default: true
+      test-tag:
+        description: 仅检查时可填写稳定 tag 来运行容器升级测试，如 v3.8.10。
+        type: string
+      retry-rejected:
+        description: 修复后重试曾被拒绝的源版本，需同时取消仅检查。
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: siyuan-lazycat-update
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check deployment contract and delivery guards
+        run: |
+          python -m pip install --disable-pip-version-check -r requirements-test.txt
+          python -B -m unittest discover -s tests -v
+      - name: Test a stable image upgrade without publishing
+        if: github.event_name == 'workflow_dispatch' && inputs.dry-run && inputs.test-tag != ''
+        env:
+          SIYUAN_TEST_TAG: ${{ inputs.test-tag }}
+        run: python -B scripts/test_upgrade.py --tag "$SIYUAN_TEST_TAG"
+  update:
+    needs: validate
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: wcaqrl/lazycat-action/.github/workflows/lazycat.yml@v1
+    with:
+      config: lazycat-action.yml
+      operation: auto
+      runner: ubuntu-24.04
+      toolchains: docker
+      enable-qemu: false
+      dry-run: ${{ github.event_name == 'push' || inputs.dry-run || false }}
+      retry-rejected: ${{ github.event_name == 'workflow_dispatch' && inputs.retry-rejected || false }}
+    secrets:
+      LZC_API_TOKEN: ${{ secrets.LZC_API_TOKEN }}

@@ -1,0 +1,13 @@
+manifest: ./lzc-manifest.yml
+icon: ./icon.png
+deploy_params: ./lzc-deploy-params.yml
+pkgout: ./dist
+buildscript: |
+  set -eu
+  if python3 -c 'import yaml' 2>/dev/null; then
+    python3 -B scripts/verify_package.py
+  else
+    python3 -m venv .lazycat-action/venv
+    .lazycat-action/venv/bin/python -m pip install --disable-pip-version-check -r requirements-test.txt
+    .lazycat-action/venv/bin/python -B scripts/verify_package.py
+  fi
