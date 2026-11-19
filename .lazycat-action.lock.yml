@@ -6,7 +6,7 @@ source:
     revision: e6794a0c44976269591c2e1633c29dc44ca379e4
     tag: v3.8.11
 fingerprint: sha256:0de3799b372a49e4ab2ddd91584d631b9565024e38c067fa0dc8443a5509bee0
-status: packaged
+status: submitted
 images:
     - id: siyuan
       source_ref: docker.io/b3log/siyuan:v3.8.11@sha256:f5998fcaea2d55594d83ed06224b351697d4e3816960564b06fbbcb3ca6ccc1c
@@ -89,3 +89,17 @@ reviews:
       created_at: 2026-11-18T03:33:29.187Z
       submitted_at: 2026-11-18T03:33:29.353152914Z
       checked_at: 2026-11-18T15:57:33.24198915Z
+    - id: 23544
+      source:
+        kind: git
+        version: 3.8.11
+        ref: refs/tags/v3.8.11
+        revision: e6794a0c44976269591c2e1633c29dc44ca379e4
+        tag: v3.8.11
+      fingerprint: sha256:0de3799b372a49e4ab2ddd91584d631b9565024e38c067fa0dc8443a5509bee0
+      application_version: 3.8.11
+      lpk_sha256: 6860371a61f97610ba796d52789407998bb5e82bbcd78e1d9ea3aa873f49b8c3
+      status: waiting
+      created_at: 2026-11-19T16:08:29.581Z
+      submitted_at: 2026-11-19T16:08:29.673701098Z
+      checked_at: 2026-11-19T16:08:29.673701729Z
