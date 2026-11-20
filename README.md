@@ -1,6 +1,6 @@
 # 思源笔记 · 懒猫微服自动更新适配器
 
-本仓库维护懒猫应用商店的 `cloud.lazycat.app.siyuan`，以 [SiYuan 官方仓库](https://github.com/siyuan-note/siyuan) 的稳定 Git 标签和同名 Docker Hub 镜像为上游。工作流调用 [wcaqrl/lazycat-action@v1](https://github.com/wcaqrl/lazycat-action)。
+本仓库维护懒猫应用商店的 `cloud.lazycat.app.siyuan`，以 [SiYuan 官方仓库](https://github.com/siyuan-note/siyuan) 的稳定 Git 标签和同名 Docker Hub 镜像为上游。工作流调用 [lazycat-adapter/lazycat-action@v1](https://github.com/lazycat-adapter/lazycat-action)。
 
 ## 工作流程
 
@@ -9,7 +9,7 @@
 3. 打包前检查源码镜像摘要、官方副本的文件系统和运行配置，并运行旧包到候选镜像的升级测试。旧工作空间、访问码、剪藏令牌、文档、附件和重启后的内容都必须通过验证。
 4. 构建 LPK，将候选版本和审核状态写入 `.lazycat-action.lock.yml`。共享工作流处理官方商店送审和 GitHub Release 的 LPK 下载附件。重试被拒版本时，LPK 版本可以和上游镜像版本不同。
 
-推送到 `main` 触发检查。GitHub Actions 计划任务约每六小时检查并处理有更新的版本。手动运行 **Update SiYuan for LazyCat** 时，`dry-run` 默认勾选，可填写 `test-tag` 额外执行容器升级测试。取消勾选后，符合发布条件的候选会转存、验证、打包并送审。仓库需配置 `LZC_API_TOKEN` Repository secret，令牌所属开发者需有本应用权限。
+推送到 `main` 触发检查。GitHub Actions 计划任务约每六小时检查并处理有更新的版本。手动运行 **Update SiYuan for LazyCat** 时，`dry-run` 默认勾选，可填写 `test-tag` 额外执行容器升级测试。取消勾选后，符合发布条件的候选会转存、验证、打包并送审。请在 `lazycat-adapter` 组织的 Actions secrets 中授权本仓库使用 `LZC_API_TOKEN`，令牌所属开发者需有本应用权限。
 
 ## 升级兼容
 
