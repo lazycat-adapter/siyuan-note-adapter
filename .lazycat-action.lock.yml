@@ -1,44 +1,34 @@
 version: 2
 source:
     kind: git
-    version: 3.8.11
-    ref: refs/tags/v3.8.11
-    revision: e6794a0c44976269591c2e1633c29dc44ca379e4
-    tag: v3.8.11
-fingerprint: sha256:0de3799b372a49e4ab2ddd91584d631b9565024e38c067fa0dc8443a5509bee0
-status: submitted
+    version: 3.8.12
+    ref: refs/tags/v3.8.12
+    revision: c901a60323f3ad22867145f16ace0cface627b5a
+    tag: v3.8.12
+fingerprint: sha256:fb40f6c0206564b688b809b97ab1fece25aebfeff52db4a8744518600ccbe03a
+status: packaged
 images:
     - id: siyuan
-      source_ref: docker.io/b3log/siyuan:v3.8.11@sha256:f5998fcaea2d55594d83ed06224b351697d4e3816960564b06fbbcb3ca6ccc1c
-      source_digest: sha256:f5998fcaea2d55594d83ed06224b351697d4e3816960564b06fbbcb3ca6ccc1c
-      runtime_ref: registry.lazycat.cloud/peter/b3log/siyuan:78b47ffc4ffda9e0
+      source_ref: docker.io/b3log/siyuan:v3.8.12@sha256:a467b06866cb3f2d76efcf8595eb58bc36761e7dd3fa4893fe972674c41bb9b2
+      source_digest: sha256:a467b06866cb3f2d76efcf8595eb58bc36761e7dd3fa4893fe972674c41bb9b2
+      runtime_ref: registry.lazycat.cloud/peter/b3log/siyuan:2851f4dc23d5847e
 application:
     package: cloud.lazycat.app.siyuan
-    version: 3.8.11
-    lpk_sha256: 6860371a61f97610ba796d52789407998bb5e82bbcd78e1d9ea3aa873f49b8c3
+    version: 3.8.12
+    lpk_sha256: 404dd5aedbbce04c04f63d86765d1e86e1d05dee193c171e0fc39bf79993704a
     changelog: |-
-        Upstream 3.8.11
+        Upstream 3.8.12
         ## Upgrade notice
 
-        ### Database formats
-
-        - **Primary-key rich text (formats 15 and 16).** Inline rich text saved in format 15 by earlier preview builds remains readable. Saving new block rich text in a primary key, including text with images, upgrades the database to at least format 16. [Primary-key compatibility](https://github.com/siyuan-note/siyuan/issues/21136)
-        - **Inline images in ordinary text fields (format 17).** Saving the first inline image in an ordinary text field upgrades that database to format 17. [Text field compatibility](https://github.com/siyuan-note/siyuan/issues/21527)
-
-        Simply opening a database does not trigger these upgrades. Version 3.8.10 supports database formats up to 14. A client can only open databases in formats it supports. Update every device that syncs or accesses the same data before using the new formats. Back up your workspace beforehand. To roll back, restore a complete pre-upgrade snapshot.
-
-        ### Other compatibility changes
-
-        - **AI long-term memory.** Restoring a workspace snapshot now rolls back both memory records and their revocation state. Restoring a snapshot from before a memory was forgotten can make it available again if it still passes the usual validity checks. [Long-term memory](https://github.com/siyuan-note/siyuan/blob/64fe75eb55fc783a345ea00fb4db8b60268dd65c/docs/LONG-TERM-MEMORY.md)
-        - **Kernel API.** JSON requests handled by API contracts have a 32 MiB body limit, with a 64 KiB limit for `loginAuth`. Requests exceeding these limits return code `-1`. [API contracts](https://github.com/siyuan-note/siyuan/blob/64fe75eb55fc783a345ea00fb4db8b60268dd65c/docs/API-CONTRACTS.md)
+        Plugins that rely on the desktop main menu’s previous identifier, `barWorkspace`, should use `barMainMenu` for the button ID and menu events. [Details](https://github.com/siyuan-note/siyuan/issues/21544)
 
         ## Overview
 
-        This release adds rich text and block editing in database primary keys, a built-in date picker, unified color editing, and plugin snapshot browsing and restoration.
+        This release adds manual ordering for sibling tags and sorting by most recent addition in the tag panel. Mobile image preview gestures and controls are improved, and asset files can now be shared from mobile.
 
-        Mind maps support custom node and connector styles and freeform connections between nodes. The standalone Markdown editor adds find and replace, while macOS gains offline Markdown Quick Look previews.
+        The desktop Markdown editor supports relative document links, and database cell editors are better aligned. This release also adds a Vietnamese interface and a built-in Russian user guide, and introduces the official SiYuan connector for WorkBuddy.
 
-        Watch the release overview: [YouTube](https://youtu.be/PLbCKqtZw_M)
+        Watch the release overview: [YouTube](https://youtu.be/aiTfeTa8Tlk)
 
         ## Changelogs
 
@@ -46,34 +36,39 @@ application:
 
         ### Enhancement
 
-        * [Support a built-in date picker and improve date and time editing](https://github.com/siyuan-note/siyuan/issues/21127)
-        * [Support unified color editing with HEX, RGB, and a native picker](https://github.com/siyuan-note/siyuan/issues/21134)
-        * [Support rich text and block editing in database primary keys](https://github.com/siyuan-note/siyuan/issues/21136)
-        * [Support offline Markdown Quick Look previews on macOS](https://github.com/siyuan-note/siyuan/issues/21139)
-        * [Support choosing whether to restore document reading positions](https://github.com/siyuan-note/siyuan/issues/21320)
-        * [Support browsing and restoring plugin snapshots](https://github.com/siyuan-note/siyuan/issues/21350)
-        * [Improve kernel process icon display on Linux](https://github.com/siyuan-note/siyuan/issues/21364)
-        * [Support separate entry icon controls for database primary keys and relation/rollup fields](https://github.com/siyuan-note/siyuan/issues/21366)
-        * [Support KDE system proxy detection on Linux](https://github.com/siyuan-note/siyuan/pull/21367)
-        * [Support per-node connector styles and shapes in mind maps](https://github.com/siyuan-note/siyuan/issues/21368)
-        * [Reduce document tree indentation to improve readability](https://github.com/siyuan-note/siyuan/issues/21381)
-        * [Support freeform mind map relationships with configurable paths and line patterns](https://github.com/siyuan-note/siyuan/issues/21384)
-        * [Support ignore rules for unused asset cleanup](https://github.com/siyuan-note/siyuan/issues/21398)
-        * [Preserve document context when following references to visible blocks](https://github.com/siyuan-note/siyuan/issues/21400)
-        * [Improve mobile bottom sheet dragging](https://github.com/siyuan-note/siyuan/issues/21403)
-        * [Support find and replace in the standalone Markdown editor](https://github.com/siyuan-note/siyuan/issues/21417)
-        * [Support expanding or collapsing grouped search results by default](https://github.com/siyuan-note/siyuan/issues/21446)
+        * [Support manual sorting of sibling tags in the tag panel](https://github.com/siyuan-note/siyuan/issues/21508)
+        * [Support sorting the tag panel by most recent addition](https://github.com/siyuan-note/siyuan/issues/21509)
+        * [Improve sync reliability when putFile writes overlap snapshot indexing](https://github.com/siyuan-note/siyuan/issues/21510)
+        * [Support relative document links in the desktop Markdown editor](https://github.com/siyuan-note/siyuan/issues/21542)
+        * [Improve database cell editor alignment](https://github.com/siyuan-note/siyuan/issues/21546)
+        * [Support Vietnamese interface language](https://github.com/siyuan-note/siyuan/issues/21548)
+        * [Support in-process OCR in dynamically linked Linux builds](https://github.com/siyuan-note/siyuan/issues/21555)
+        * [Improve mobile image preview gestures and controls](https://github.com/siyuan-note/siyuan/issues/21557)
+        * [Add official SiYuan connector for WorkBuddy](https://github.com/siyuan-note/siyuan/issues/21574)
+        * [Support sharing asset files on mobile](https://github.com/siyuan-note/siyuan/issues/21590)
+        * [Support AI provenance in block attributes](https://github.com/siyuan-note/siyuan/issues/21630)
 
         ### Bugfix
 
-        * [Automatic block collection continues after the database block is deleted](https://github.com/siyuan-note/siyuan/issues/21361)
-        * [Embedded local HTML attachments open in an external browser on iOS](https://github.com/siyuan-note/siyuan/issues/21389)
+        * [SiYuan may exit during startup on iOS](https://github.com/siyuan-note/siyuan/issues/21556)
+
+        ### Document
+
+        * [Add a built-in Russian user guide](https://github.com/siyuan-note/siyuan/pull/21585)
+
+        ### Refactor
+
+        * [Upgrade to Electron v44.11.5](https://github.com/siyuan-note/siyuan/issues/21607)
+
+        ### Development
+
+        * [Improve naming consistency for the desktop main menu](https://github.com/siyuan-note/siyuan/issues/21544)
 
         ## Download
 
         * [B3log](https://b3log.org/siyuan/en/download.html)
         * [GitHub](https://github.com/siyuan-note/siyuan/releases)
-packaged_at: 2026-11-19T16:08:12.140601785Z
+packaged_at: 2026-11-24T22:46:30.201162362Z
 reviews:
     - id: 23419
       source:
